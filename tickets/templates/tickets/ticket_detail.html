@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Ticket Details</title>
+    <link rel="stylesheet" href="{% static 'tickets/style.css' %}">
+</head>
+
+<body>
+
+    <h1>Ticket Details</h1>
+
+    <h2>{{ ticket.title }}</h2>
+
+    <p>
+        <strong>Category:</strong>
+        {{ ticket.get_category_display }}
+    </p>
+
+    <p>
+        <strong>Priority:</strong>
+        {{ ticket.get_priority_display }}
+    </p>
+
+    <p>
+        <strong>Status:</strong>
+        {{ ticket.get_status_display }}
+    </p>
+
+    <p>
+        <strong>Created:</strong>
+        {{ ticket.created_at }}
+    </p>
+
+    <hr>
+
+    <h3>Description</h3>
+
+    <p>
+        {{ ticket.description }}
+    </p>
+
+    <hr>
+
+    <h3>Comments</h3>
+
+    {% if ticket.comments.all %}
+
+    {% for comment in ticket.comments.all %}
+
+    <div>
+        <strong>{{ comment.user.username }}</strong>
+
+        <small>
+            {{ comment.created_at }}
+        </small>
+
+        <p>{{ comment.message }}</p>
+    </div>
+
+    <hr>
+
+    {% empty %}
+
+    <p>No comments yet.</p>
+
+    {% endfor %}
+
+    {% else %}
+
+    <p>No comments yet.</p>
+
+    {% endif %}
+
+
+    <h3>Add Comment</h3>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Add Comment</button>
+
+    </form>
+
+    <br>
+
+    <a href="/my-tickets/">← Back to My Tickets</a>
+
+    <h2>Activity History</h2>
+
+    {% if activities %}
+
+    {% for activity in activities %}
+
+    <div>
+        <strong>{{ activity.action }}</strong>
+
+        <p>{{ activity.description }}</p>
+
+        <small>
+            By {{ activity.user.username }}
+            on {{ activity.created_at }}
+        </small>
+    </div>
+
+    <hr>
+
+    {% endfor %}
+
+    {% else %}
+
+    <p>No activity yet.</p>
+
+    {% endif %}
+
+</body>
+
+</html>

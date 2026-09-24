@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Manager Dashboard</title>
+    <link rel="stylesheet" href="{% static 'tickets/style.css' %}">
+</head>
+
+<body>
+    
+    <h1>Student Support Dashboard</h1>
+
+    <h2>Ticket Overview</h2>
+
+    <p>Total Tickets: {{ total_tickets }}</p>
+
+    <p>Open: {{ open_tickets }}</p>
+
+    <p>In Progress: {{ in_progress_tickets }}</p>
+
+    <p>Pending: {{ pending_tickets }}</p>
+
+    <p>Resolved: {{ resolved_tickets }}</p>
+
+    <p>Closed: {{ closed_tickets }}</p>
+
+    <p>High Priority: {{ high_priority_tickets }}</p>
+
+    <p>Overdue: {{ overdue_tickets|length }}</p>
+
+
+    <h2>Overdue Tickets</h2>
+
+    {% if overdue_tickets %}
+
+    <table border="1">
+
+        <tr>
+            <th>Title</th>
+            <th>Student</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Due Date</th>
+        </tr>
+
+        {% for ticket in overdue_tickets %}
+
+        <tr>
+            <td>{{ ticket.title }}</td>
+            <td>{{ ticket.student.username }}</td>
+            <td>{{ ticket.get_priority_display }}</td>
+            <td>{{ ticket.get_status_display }}</td>
+            <td>{{ ticket.due_date }}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+
+    <p>No overdue tickets.</p>
+
+    {% endif %}
+
+    <form method="POST" action="/logout/">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+</body>
+</html>

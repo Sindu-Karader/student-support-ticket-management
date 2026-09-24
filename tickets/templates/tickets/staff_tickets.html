@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Staff Tickets</title>
+    <link rel="stylesheet" href="{% static 'tickets/style.css' %}">
+</head>
+
+<body>
+
+    <h1>Staff Ticket Management</h1>
+
+    {% if tickets %}
+
+    <table border="1" cellpadding="10">
+
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Student</th>
+            <th>Category</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Age</th>
+            <th>Due Date</th>
+            <th>SLA</th>
+            <th>Action</th>
+        </tr>
+
+        {% for ticket in tickets %}
+
+        <tr>
+
+            <td>{{ ticket.id }}</td>
+
+            <td>
+                <a href="/ticket/{{ ticket.id }}/">
+                    {{ ticket.title }}
+                </a>
+            </td>
+
+            <td>{{ ticket.student.username }}</td>
+
+            <td>{{ ticket.get_category_display }}</td>
+
+            <td>{{ ticket.get_priority_display }}</td>
+
+            <td>{{ ticket.get_status_display }}</td>
+
+            <td>{{ ticket.created_at }}</td>
+
+            <td>{{ ticket.age_days }} day(s)</td>
+
+            <td>
+                {% if ticket.due_date %}
+                {{ ticket.due_date|date:"d M Y H:i" }}
+                {% else %}
+                -
+                {% endif %}
+            </td>
+
+            <td>
+                {{ ticket.sla_status }}
+            </td>
+
+            <td>
+                <a href="{% url 'update_ticket' ticket.id %}">
+                    Update
+                </a>
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+
+    <p>No tickets available.</p>
+
+    {% endif %}
+
+    <br>
+
+    <form method="POST" action="/logout/">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My Tickets</title>
+    <link rel="stylesheet" href="{% static 'tickets/style.css' %}">
+</head>
+
+<body>
+
+    <h1>My Tickets</h1>
+
+    <a href="/create/">Create New Ticket</a>
+
+    <br><br>
+
+    {% if tickets %}
+
+    <table border="1" cellpadding="10">
+
+        <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Created</th>
+        </tr>
+
+        {% for ticket in tickets %}
+
+        <tr>
+            <td>
+                <a href="{% url 'ticket_detail' ticket.id %}">
+                    {{ ticket.title }}
+                </a>
+            </td>
+            <td>{{ ticket.get_category_display }}</td>
+            <td>{{ ticket.get_priority_display }}</td>
+            <td>{{ ticket.get_status_display }}</td>
+            <td>{{ ticket.created_at }}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+
+    <p>You have not created any tickets yet.</p>
+
+    {% endif %}
+
+    <br>
+
+    <form method="POST" action="/logout/">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Ticket</title>
+    <link rel="stylesheet" href="{% static 'tickets/style.css' %}">
+</head>
+
+<body>
+
+    <h1>Update Ticket</h1>
+
+    <h2>{{ ticket.title }}</h2>
+
+    <p>
+        <strong>Student:</strong>
+        {{ ticket.student.username }}
+    </p>
+
+    <p>
+        <strong>Description:</strong>
+        {{ ticket.description }}
+    </p>
+
+    <hr>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            Update Ticket
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/staff-tickets/">
+        ← Back to Staff Tickets
+    </a>
+
+</body>
+</html>
